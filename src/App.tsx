@@ -3,7 +3,7 @@ import { Paper } from "@mui/material";
 
 import { AppBar } from "./components";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { NewSession, Sessions } from "./views";
+import { ActiveSession, NewSession, Sessions } from "./views";
 
 export default function App() {
   return (
@@ -23,8 +23,8 @@ export default function App() {
               <Route path="/sessions">
                 <Route index element={<Sessions />} />
                 <Route path="new" element={<NewSession />} />
+                <Route path=":sessionId/active" element={<ActiveSession />} />
               </Route>
-              <Route path="*" element={<Navigate to="/sessions" />} />
             </Routes>
           </Paper>
         </Box>
