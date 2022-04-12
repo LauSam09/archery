@@ -9,36 +9,37 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 interface End {
   scores: Array<number | string>;
 }
 
-const initialEnds: Array<End> = [];
-
 export const ActiveSession = () => {
   const { sessionId } = useParams<{ sessionId: string }>();
   const [ends, setEnds] = useState<Array<End>>([{ scores: [] }]);
-
-  useEffect(() => {
-    const numEnds = ends.length;
-    const arrowsInLastEnd = ends[numEnds - 1]?.scores?.length;
-
-    if (arrowsInLastEnd === 6) {
-      setEnds((oldEnds) => [...oldEnds, { scores: [] }]);
-    }
-  }, [ends]);
 
   const addScore = (score: number | string) => {
     setEnds((oldEnds) => {
       const newEnds = [...oldEnds];
       const numEnds = oldEnds.length;
-      newEnds[numEnds - 1].scores.push(score);
+      const arrowsInLastEnd = oldEnds[numEnds - 1]?.scores?.length;
+
+      if (arrowsInLastEnd === undefined || arrowsInLastEnd === 6) {
+        newEnds.push({ scores: [score] });
+      } else {
+        newEnds[numEnds - 1].scores.push(score);
+      }
+
       return newEnds;
     });
   };
+
+  const displayEnds = [...ends];
+  if (displayEnds[ends.length - 1].scores.length === 6) {
+    displayEnds.push({ scores: [] });
+  }
 
   return (
     <div>
@@ -56,11 +57,11 @@ export const ActiveSession = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {ends.map((end, i) => (
-              <TableRow>
+            {displayEnds.map((end, i) => (
+              <TableRow key={i}>
                 <TableCell>{i + 1}</TableCell>
                 {Array.from(Array(6).keys()).map((cell) => (
-                  <TableCell>{end.scores[cell]}</TableCell>
+                  <TableCell key={cell}>{end.scores[cell]}</TableCell>
                 ))}
               </TableRow>
             ))}
