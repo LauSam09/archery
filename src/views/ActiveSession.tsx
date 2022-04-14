@@ -9,8 +9,11 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { useState } from "react";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
+import { db } from "../config";
 
 interface End {
   scores: Array<number | string>;
@@ -19,6 +22,34 @@ interface End {
 export const ActiveSession = () => {
   const { sessionId } = useParams<{ sessionId: string }>();
   const [ends, setEnds] = useState<Array<End>>([{ scores: [] }]);
+
+  useEffect(() => {
+    const getFromDb = async () => {
+      const sessionDoc = doc(db, "sessions", sessionId ?? "");
+      const data = (await getDoc(sessionDoc)).data();
+
+      setEnds(data?.ends);
+    };
+
+    getFromDb();
+  }, [sessionId]);
+
+  useEffect(() => {
+    const updateDb = async () => {
+      const sessionDoc = doc(db, "sessions", sessionId ?? "");
+      await updateDoc(sessionDoc, {
+        ends,
+      });
+    };
+
+    const numEnds = ends.length;
+    const arrowsInLastEnd = ends[numEnds - 1].scores.length;
+
+    // Consider debounce saving instead.
+    if (arrowsInLastEnd === 6) {
+      updateDb();
+    }
+  }, [ends, sessionId]);
 
   const addScore = (score: number | string) => {
     setEnds((oldEnds) => {
