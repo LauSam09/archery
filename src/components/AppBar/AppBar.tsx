@@ -4,6 +4,8 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Account from "@mui/icons-material/AccountCircle";
+import Link from "@mui/material/Link";
+import { Link as RouterLink } from "react-router-dom";
 import { onAuthStateChanged, signInWithRedirect, signOut } from "firebase/auth";
 
 import { auth, provider } from "../../config";
@@ -30,10 +32,16 @@ export const AppBar = () => {
 
   return (
     <MuiAppBar position="static">
-      <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Archery
-        </Typography>
+      <Toolbar sx={{ justifyContent: "space-between" }}>
+        <Link
+          component={RouterLink}
+          to="/sessions"
+          sx={{ color: "inherit", textDecoration: "none" }}
+        >
+          <Typography variant="h6" component="div">
+            Archery
+          </Typography>
+        </Link>
         {authenticated === true && (
           <Button onClick={logout} color="inherit">
             <Account />

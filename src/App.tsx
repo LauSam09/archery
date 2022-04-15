@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import { Paper } from "@mui/material";
 
 import { AppBar } from "./components";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ActiveSession, NewSession, Sessions } from "./views";
 
 export default function App() {

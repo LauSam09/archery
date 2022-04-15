@@ -30,7 +30,11 @@ export const Sessions = () => {
       </Button>
       <List>
         {sessions?.map((session) => (
-          <ListItem key={session.id} component={Link} to={session.id}>
+          <ListItem
+            key={session.id}
+            component={Link}
+            to={`${session.id}/active`}
+          >
             <ListItemText>
               {session.sessionTimestamp.toLocaleDateString()} {session.distance}
               {session.distanceUnit}

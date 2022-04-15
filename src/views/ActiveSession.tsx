@@ -19,16 +19,18 @@ interface End {
   scores: Array<number | string>;
 }
 
+const startingEnds = [{ scores: [] }];
+
 export const ActiveSession = () => {
   const { sessionId } = useParams<{ sessionId: string }>();
-  const [ends, setEnds] = useState<Array<End>>([{ scores: [] }]);
+  const [ends, setEnds] = useState<Array<End>>(startingEnds);
 
   useEffect(() => {
     const getFromDb = async () => {
       const sessionDoc = doc(db, "sessions", sessionId ?? "");
       const data = (await getDoc(sessionDoc)).data();
 
-      setEnds(data?.ends);
+      setEnds(data?.ends ?? startingEnds);
     };
 
     getFromDb();
