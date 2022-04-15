@@ -67,6 +67,34 @@ export const ActiveSession = () => {
     });
   };
 
+  const undoPreviousScore = () => {
+    const lastEnd = ends.length - 1;
+    const lastScoreIndex = ends[lastEnd].scores.length - 1;
+
+    const newEnds = [...ends];
+
+    if (lastScoreIndex > -1) {
+      newEnds[lastEnd].scores = newEnds[lastEnd].scores.slice(
+        0,
+        lastScoreIndex
+      );
+    } else if (lastEnd > 0) {
+      newEnds.splice(lastScoreIndex, 1);
+
+      const newLastScoreIndex = ends[lastEnd - 1].scores.length - 1;
+      if (newLastScoreIndex > -1) {
+        newEnds[lastEnd - 1].scores = newEnds[lastEnd - 1].scores.slice(
+          0,
+          newLastScoreIndex
+        );
+      }
+    } else {
+      return;
+    }
+
+    setEnds(newEnds);
+  };
+
   const displayEnds = [...ends];
   if (displayEnds[ends.length - 1].scores.length === 6) {
     displayEnds.push({ scores: [] });
@@ -100,6 +128,12 @@ export const ActiveSession = () => {
         </Table>
       </TableContainer>
       <Box sx={{ marginTop: "20px", "> *": { marginBottom: "15px" } }}>
+        <Button
+          onClick={() => undoPreviousScore()}
+          sx={{ float: "right", marginBottom: "15px" }}
+        >
+          Undo
+        </Button>
         <ButtonGroup fullWidth size="large" aria-label="large button group">
           <Button
             onClick={() => addScore(7)}
