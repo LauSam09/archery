@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 
 import { Face, Unit } from "../models";
 import { db } from "../config";
@@ -34,15 +34,17 @@ export const NewSession = () => {
       return;
     }
 
-    const docRef = await addDoc(collection(db, "sessions"), {
+    const newSessionRef = doc(collection(db, "sessions"));
+
+    setDoc(newSessionRef, {
       face,
       distance: +distance,
       distanceUnit,
       arrowsPerEnd: +arrowsPerEnd,
-      sessionTimestamp: serverTimestamp(),
+      sessionTimestamp: new Date().toISOString(),
     });
 
-    navigate(`../${docRef.id}/active`);
+    navigate(`../${newSessionRef.id}/active`);
   };
 
   return (

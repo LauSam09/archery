@@ -39,7 +39,7 @@ export const ActiveSession = () => {
   useEffect(() => {
     const updateDb = async () => {
       const sessionDoc = doc(db, "sessions", sessionId ?? "");
-      await updateDoc(sessionDoc, {
+      updateDoc(sessionDoc, {
         ends,
       });
     };

@@ -15,7 +15,6 @@ export const Sessions = () => {
       const tmpSessions = querySnapshot.docs.map((d) => ({
         ...d.data(),
         id: d.id,
-        sessionTimestamp: d.data().sessionTimestamp.toDate(),
       })) as unknown as Session[];
       setSessions(tmpSessions);
     }
@@ -36,7 +35,8 @@ export const Sessions = () => {
             to={`${session.id}/active`}
           >
             <ListItemText>
-              {session.sessionTimestamp.toLocaleDateString()} {session.distance}
+              {new Date(session.sessionTimestamp).toLocaleDateString()}{" "}
+              {session.distance}
               {session.distanceUnit}
             </ListItemText>
           </ListItem>

@@ -1,18 +1,19 @@
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { enableIndexedDbPersistence, getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCq8scRYr-rCJnpUiGRP03KIQK74aIhvyo",
-  authDomain: "archery-89374.firebaseapp.com",
-  projectId: "archery-89374",
-  storageBucket: "archery-89374.appspot.com",
-  messagingSenderId: "742659309021",
-  appId: "1:742659309021:web:092cac756842a458e98a34",
-  measurementId: "G-252PD6QKNZ",
+  apiKey: "AIzaSyB8uPcq-OuYd898caXKWaHU1cJ5Gz4La-Q",
+  authDomain: "archery-55139.firebaseapp.com",
+  projectId: "archery-55139",
+  storageBucket: "archery-55139.appspot.com",
+  messagingSenderId: "797222305846",
+  appId: "1:797222305846:web:d2cedb8b09ebb6c94b9897",
+  measurementId: "G-QMDZNBWTHC",
 };
 
 export const app = initializeApp(firebaseConfig);
 export const provider = new GoogleAuthProvider();
 export const auth = getAuth();
 export const db = getFirestore(app);
+enableIndexedDbPersistence(db).catch(console.error);
