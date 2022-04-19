@@ -9,7 +9,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -22,50 +22,43 @@ interface End {
 const startingEnds = [{ scores: [] }];
 
 export const ActiveSession = () => {
-  const { sessionId } = useParams<{ sessionId: string }>();
+  const { sessionId: sessionIdParam } = useParams<{ sessionId: string }>();
+  const sessionId = sessionIdParam ?? "";
   const [ends, setEnds] = useState<Array<End>>(startingEnds);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const getFromDb = async () => {
-      const sessionDoc = doc(db, "sessions", sessionId ?? "");
-      const data = (await getDoc(sessionDoc)).data();
+    const unsub = onSnapshot(
+      doc(db, "sessions", sessionId),
+      { includeMetadataChanges: true },
+      (doc) => {
+        setEnds(doc.data()?.ends ?? startingEnds);
+        if (!loaded) {
+          setLoaded(true);
+        }
+      }
+    );
 
-      setEnds(data?.ends ?? startingEnds);
+    return () => {
+      unsub();
     };
-
-    getFromDb();
-  }, [sessionId]);
-
-  useEffect(() => {
-    const updateDb = async () => {
-      const sessionDoc = doc(db, "sessions", sessionId ?? "");
-      updateDoc(sessionDoc, {
-        ends,
-      });
-    };
-
-    const numEnds = ends.length;
-    const arrowsInLastEnd = ends[numEnds - 1].scores.length;
-
-    // Consider debounce saving instead.
-    if (arrowsInLastEnd === 6) {
-      updateDb();
-    }
-  }, [ends, sessionId]);
+  }, [loaded, sessionId]);
 
   const addScore = (score: number | string) => {
-    setEnds((oldEnds) => {
-      const newEnds = [...oldEnds];
-      const numEnds = oldEnds.length;
-      const arrowsInLastEnd = oldEnds[numEnds - 1]?.scores?.length;
+    const numEnds = ends.length;
+    const newEnds = [...ends];
+    const arrowsInLastEnd = ends[numEnds - 1]?.scores?.length;
 
-      if (arrowsInLastEnd === undefined || arrowsInLastEnd === 6) {
-        newEnds.push({ scores: [score] });
-      } else {
-        newEnds[numEnds - 1].scores.push(score);
-      }
+    if (arrowsInLastEnd === undefined || arrowsInLastEnd === 6) {
+      newEnds.push({ scores: [score] });
+    } else {
+      newEnds[numEnds - 1].scores.push(score);
+    }
 
-      return newEnds;
+    const sessionRef = doc(db, "sessions", sessionId);
+
+    updateDoc(sessionRef, {
+      ends: newEnds,
     });
   };
 
@@ -94,8 +87,16 @@ export const ActiveSession = () => {
       return;
     }
 
-    setEnds(newEnds);
+    const sessionRef = doc(db, "sessions", sessionId);
+
+    updateDoc(sessionRef, {
+      ends: newEnds,
+    });
   };
+
+  if (!loaded) {
+    return <span>Loading...</span>;
+  }
 
   const displayEnds = [...ends];
   if (displayEnds[ends.length - 1].scores.length === 6) {
