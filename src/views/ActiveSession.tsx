@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Grid,
   Table,
   TableBody,
   TableCell,
@@ -106,8 +107,14 @@ export const ActiveSession = () => {
   return (
     <div>
       <TableContainer>
-        <Table size="small">
+        <Table sx={{ tableLayout: "fixed" }} size="small">
           <TableHead>
+            <TableRow>
+              <TableCell />
+              <TableCell colSpan={6} sx={{ textAlign: "center" }}>
+                Arrows
+              </TableCell>
+            </TableRow>
             <TableRow>
               <TableCell>End</TableCell>
               <TableCell>1</TableCell>
@@ -130,105 +137,129 @@ export const ActiveSession = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Box sx={{ marginTop: "20px", "> *": { marginBottom: "15px" } }}>
+      <Box
+        sx={{
+          marginTop: "20px",
+          "> *": { marginBottom: "15px" },
+        }}
+      >
         <Button
           onClick={() => undoPreviousScore()}
           sx={{ float: "right", marginBottom: "15px" }}
         >
           Undo
         </Button>
-        <ButtonGroup fullWidth size="large" aria-label="large button group">
-          <Button
-            onClick={() => addScore(7)}
-            sx={{ backgroundColor: "red" }}
-            variant="contained"
-          >
-            7
-          </Button>
-          <Button
-            onClick={() => addScore(8)}
-            sx={{ backgroundColor: "red" }}
-            variant="contained"
-          >
-            8
-          </Button>
-          <Button
-            sx={{ backgroundColor: "#ffee58", color: "black" }}
-            variant="contained"
-            onClick={() => addScore(9)}
-          >
-            9
-          </Button>
-          <Button
-            sx={{ backgroundColor: "#ffee58", color: "black" }}
-            variant="contained"
-            onClick={() => addScore(10)}
-          >
-            10
-          </Button>
-        </ButtonGroup>
-        <ButtonGroup fullWidth size="large" aria-label="large button group">
-          <Button
-            sx={{ backgroundColor: "black", color: "white" }}
-            onClick={() => addScore(3)}
-            variant="contained"
-          >
-            3
-          </Button>
-          <Button
-            sx={{ backgroundColor: "black", color: "white" }}
-            variant="contained"
-            onClick={() => addScore(4)}
-          >
-            4
-          </Button>
-          <Button
-            onClick={() => addScore(5)}
-            sx={{ backgroundColor: "blue" }}
-            variant="contained"
-          >
-            5
-          </Button>
-          <Button
-            onClick={() => addScore(6)}
-            sx={{ backgroundColor: "blue" }}
-            variant="contained"
-          >
-            6
-          </Button>
-        </ButtonGroup>
-
-        <ButtonGroup fullWidth>
-          <Button
-            onClick={() => addScore("M")}
-            sx={{ backgroundColor: "green" }}
-            variant="contained"
-          >
-            M
-          </Button>
-          <Button
-            sx={{ backgroundColor: "white", color: "black" }}
-            size="large"
-            onClick={() => addScore(1)}
-            variant="contained"
-          >
-            1
-          </Button>
-          <Button
-            sx={{ backgroundColor: "white", color: "black" }}
-            onClick={() => addScore(2)}
-            variant="contained"
-          >
-            2
-          </Button>
-          <Button
-            onClick={() => addScore("X")}
-            sx={{ backgroundColor: "#ffee58", color: "black" }}
-            variant="contained"
-          >
-            X
-          </Button>
-        </ButtonGroup>
+        <Grid container spacing={2}>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
+            <ButtonGroup fullWidth size="large">
+              <Button
+                sx={{ backgroundColor: "white", color: "black" }}
+                size="large"
+                onClick={() => addScore(1)}
+                variant="contained"
+              >
+                1
+              </Button>
+              <Button
+                sx={{ backgroundColor: "white", color: "black" }}
+                onClick={() => addScore(2)}
+                variant="contained"
+              >
+                2
+              </Button>
+            </ButtonGroup>
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
+            <ButtonGroup fullWidth size="large" aria-label="large button group">
+              <Button
+                sx={{ backgroundColor: "black", color: "white" }}
+                onClick={() => addScore(3)}
+                variant="contained"
+              >
+                3
+              </Button>
+              <Button
+                sx={{ backgroundColor: "black", color: "white" }}
+                variant="contained"
+                onClick={() => addScore(4)}
+              >
+                4
+              </Button>
+            </ButtonGroup>
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
+            <ButtonGroup fullWidth size="large" aria-label="large button group">
+              <Button
+                sx={{ backgroundColor: "blue", color: "white" }}
+                onClick={() => addScore(5)}
+                variant="contained"
+              >
+                5
+              </Button>
+              <Button
+                sx={{ backgroundColor: "blue", color: "white" }}
+                variant="contained"
+                onClick={() => addScore(6)}
+              >
+                6
+              </Button>
+            </ButtonGroup>
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
+            <ButtonGroup fullWidth size="large" aria-label="large button group">
+              <Button
+                onClick={() => addScore(7)}
+                sx={{ backgroundColor: "red" }}
+                variant="contained"
+              >
+                7
+              </Button>
+              <Button
+                onClick={() => addScore(8)}
+                sx={{ backgroundColor: "red" }}
+                variant="contained"
+              >
+                8
+              </Button>
+            </ButtonGroup>
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
+            <ButtonGroup fullWidth size="large" aria-label="large button group">
+              <Button
+                sx={{ backgroundColor: "#ffee58", color: "black" }}
+                variant="contained"
+                onClick={() => addScore(9)}
+              >
+                9
+              </Button>
+              <Button
+                sx={{ backgroundColor: "#ffee58", color: "black" }}
+                variant="contained"
+                onClick={() => addScore(10)}
+              >
+                10
+              </Button>
+            </ButtonGroup>
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} lg={2}>
+            <ButtonGroup fullWidth size="large">
+              <Button
+                onClick={() => addScore("X")}
+                sx={{ backgroundColor: "#ffee58", color: "black" }}
+                variant="contained"
+              >
+                X
+              </Button>
+              <Button
+                onClick={() => addScore("M")}
+                sx={{ backgroundColor: "green" }}
+                variant="contained"
+              >
+                M
+              </Button>
+            </ButtonGroup>
+          </Grid>
+        </Grid>
       </Box>
     </div>
   );
