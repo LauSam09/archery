@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { getAuth } from "firebase/auth";
 import { collection, doc, setDoc } from "firebase/firestore";
 
 import { Face, Unit } from "../models";
@@ -30,7 +31,11 @@ export const NewSession = () => {
     // @ts-expect-error
     const arrowsPerEnd = e.target[6].value;
 
-    if (isNaN(distance) || isNaN(arrowsPerEnd)) {
+    const auth = getAuth();
+
+    const userId = auth?.currentUser?.uid;
+
+    if (isNaN(distance) || isNaN(arrowsPerEnd) || !userId) {
       return;
     }
 
@@ -42,9 +47,10 @@ export const NewSession = () => {
       distanceUnit,
       arrowsPerEnd: +arrowsPerEnd,
       sessionTimestamp: new Date().toISOString(),
+      userId,
     });
 
-    navigate(`../${newSessionRef.id}/active`);
+    setTimeout(() => navigate(`../${newSessionRef.id}/active`), 250);
   };
 
   return (

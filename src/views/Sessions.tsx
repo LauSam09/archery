@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Box, Button, List, ListItem, ListItemText } from "@mui/material";
 import { Link } from "react-router-dom";
-import { collection, getDocs } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 import { Session } from "../models";
 import { db } from "../config";
@@ -9,9 +10,15 @@ import { db } from "../config";
 export const Sessions = () => {
   const [sessions, setSessions] = useState<Session[]>();
 
+  // TODO move auth checking higher
   useEffect(() => {
     async function loadSessions() {
-      const querySnapshot = await getDocs(collection(db, "sessions"));
+      const sessionQuery = query(
+        collection(db, "sessions"),
+        where("userId", "==", auth?.currentUser?.uid)
+      );
+
+      const querySnapshot = await getDocs(sessionQuery);
       const tmpSessions = querySnapshot.docs.map((d) => ({
         ...d.data(),
         id: d.id,
@@ -19,7 +26,10 @@ export const Sessions = () => {
       setSessions(tmpSessions);
     }
 
-    loadSessions();
+    const auth = getAuth();
+    auth.onAuthStateChanged((user) => {
+      user && loadSessions();
+    });
   }, []);
 
   return (
