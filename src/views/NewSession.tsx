@@ -50,7 +50,7 @@ export const NewSession = () => {
       userId,
     });
 
-    setTimeout(() => navigate(`../${newSessionRef.id}/active`), 250);
+    setTimeout(() => navigate(`../${newSessionRef.id}/active`), 750);
   };
 
   return (

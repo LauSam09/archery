@@ -20,12 +20,10 @@ interface End {
   scores: Array<number | string>;
 }
 
-const startingEnds = [{ scores: [] }];
-
 export const ActiveSession = () => {
   const { sessionId: sessionIdParam } = useParams<{ sessionId: string }>();
   const sessionId = sessionIdParam ?? "";
-  const [ends, setEnds] = useState<Array<End>>(startingEnds);
+  const [ends, setEnds] = useState<Array<End>>([{ scores: [] }]);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -33,7 +31,7 @@ export const ActiveSession = () => {
       doc(db, "sessions", sessionId),
       { includeMetadataChanges: true },
       (doc) => {
-        setEnds(doc.data()?.ends ?? startingEnds);
+        setEnds(doc.data()?.ends ?? [{ scores: [] }]);
         if (!loaded) {
           setLoaded(true);
         }
