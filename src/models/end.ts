@@ -1,3 +1,3 @@
 export interface End {
-  scores: Array<number | string>;
+  scores: Array<number | "X">;
 }

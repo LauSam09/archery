@@ -5,7 +5,26 @@ const sessions: Array<SessionModel> = [
     id: 1,
     name: "Morning Portsmouth",
     date: new Date(2022, 5, 17),
-    rounds: [],
+    rounds: [
+      {
+        ends: [{ scores: [9, 5, 0] }, { scores: [3, 5, 9] }],
+        face: "122cm",
+        distance: 60,
+        distanceUnit: "yds",
+      },
+      {
+        ends: [{ scores: [5, 1, "X"] }],
+        face: "122cm",
+        distance: 50,
+        distanceUnit: "yds",
+      },
+      {
+        ends: [{ scores: [9, 5, 0] }, { scores: [3, 5, 9] }],
+        face: "122cm",
+        distance: 40,
+        distanceUnit: "yds",
+      },
+    ],
   },
   { id: 2, name: "Afternoon Western", date: new Date(2022, 5, 19), rounds: [] },
   { id: 3, name: "Evening Practice", date: new Date(2022, 5, 16), rounds: [] },
