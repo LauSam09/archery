@@ -1,10 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { ChakraProvider } from "@chakra-ui/react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { ActiveSession, Home, SessionDetails, Sessions } from "./views";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -12,7 +14,18 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ChakraProvider>
-      <App />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />}>
+            <Route index element={<Home />} />
+            <Route path="sessions">
+              <Route index element={<Sessions />} />
+              <Route path=":sessionId" element={<SessionDetails />} />
+              <Route path="new" element={<ActiveSession />} />
+            </Route>
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </ChakraProvider>
   </React.StrictMode>
 );
