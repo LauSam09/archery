@@ -9,7 +9,7 @@ export function NavBar() {
           <Box p="4">
             {" "}
             <Link as={RouterLink} to="/">
-              <Text fontSize="3xl">Archery Scorer</Text>
+              <Text fontSize="xl">Archery Scorer</Text>
             </Link>
           </Box>
           <Spacer />
