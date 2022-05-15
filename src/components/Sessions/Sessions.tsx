@@ -1,22 +1,38 @@
-import { Box, Divider, Link, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Divider,
+  Link,
+  List,
+  ListItem,
+  Skeleton,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 
+import { getSessions } from "../../data";
 import { SessionModel } from "../../models";
 
-const sessions: Array<SessionModel> = [
-  {
-    id: 1,
-    name: "Morning Portsmouth",
-    date: new Date(2022, 5, 17),
-    rounds: [],
-  },
-  { id: 2, name: "Afternoon Western", date: new Date(2022, 5, 19), rounds: [] },
-  { id: 3, name: "Evening Practice", date: new Date(2022, 5, 16), rounds: [] },
-  { id: 4, name: "National", date: new Date(2022, 5, 15), rounds: [] },
-  { id: 5, name: "WA Evening", date: new Date(2022, 5, 20), rounds: [] },
-];
-
 export function Sessions() {
+  const [sessions, setSessions] = useState<Array<SessionModel>>();
+
+  useEffect(() => {
+    setTimeout(() => getSessions().then(setSessions), 500);
+  }, []);
+
+  if (!sessions) {
+    return (
+      <Stack>
+        <Skeleton height="70px" />
+        <Skeleton height="70px" />
+        <Skeleton height="70px" />
+        <Skeleton height="70px" />
+        <Skeleton height="70px" />
+      </Stack>
+    );
+  }
+
   if (sessions.length === 0) {
     return <Text>No sessions recorded yet</Text>;
   }
@@ -26,9 +42,9 @@ export function Sessions() {
   );
 
   return (
-    <ul>
+    <List>
       {orderedSessions.map((s) => (
-        <li key={s.id}>
+        <ListItem key={s.id}>
           <Link as={RouterLink} to={`${s.id}`}>
             <Box p="4">
               <Text>{s.name}</Text>
@@ -36,8 +52,8 @@ export function Sessions() {
             </Box>
           </Link>
           <Divider />
-        </li>
+        </ListItem>
       ))}
-    </ul>
+    </List>
   );
 }
