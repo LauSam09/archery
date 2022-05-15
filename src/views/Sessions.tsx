@@ -1,3 +1,5 @@
+import { Sessions as SessionsComponent } from "../components";
+
 export function Sessions() {
-  return <>Sessions</>;
+  return <SessionsComponent />;
 }

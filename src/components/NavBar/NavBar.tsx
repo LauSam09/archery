@@ -1,15 +1,15 @@
-import { Box, Container, Flex, Link, Spacer } from "@chakra-ui/react";
+import { Box, Container, Flex, Link, Spacer, Text } from "@chakra-ui/react";
 import { NavLink as RouterLink } from "react-router-dom";
 
 export function NavBar() {
   return (
     <nav style={{ backgroundColor: "gold" }}>
       <Container maxWidth="4xl">
-        <Flex>
+        <Flex alignItems="center">
           <Box p="4">
             {" "}
             <Link as={RouterLink} to="/">
-              Archery Scorer
+              <Text fontSize="3xl">Archery Scorer</Text>
             </Link>
           </Box>
           <Spacer />
