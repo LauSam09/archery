@@ -1,3 +1,4 @@
+export * from "./ActiveSession";
 export * from "./Distance";
 export * from "./NavBar";
 export * from "./SessionDetails";
