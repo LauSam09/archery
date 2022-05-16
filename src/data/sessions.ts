@@ -1,4 +1,4 @@
-import { SessionModel } from "../models";
+import { DistanceUnit, MeasurementType, SessionModel } from "../models";
 
 const sessions: Array<SessionModel> = [
   {
@@ -9,20 +9,23 @@ const sessions: Array<SessionModel> = [
       {
         ends: [{ scores: [9, 5, 0] }, { scores: [3, 5, 9] }],
         face: "122cm",
+        scoring: MeasurementType.Imperial,
         distance: 60,
-        distanceUnit: "yds",
+        distanceUnit: DistanceUnit.Yards,
       },
       {
         ends: [{ scores: [5, 1, "X"] }],
         face: "122cm",
+        scoring: MeasurementType.Imperial,
         distance: 50,
-        distanceUnit: "yds",
+        distanceUnit: DistanceUnit.Yards,
       },
       {
         ends: [{ scores: [9, 5, 0] }, { scores: [3, 5, 9] }],
         face: "122cm",
+        scoring: MeasurementType.Imperial,
         distance: 40,
-        distanceUnit: "yds",
+        distanceUnit: DistanceUnit.Yards,
       },
     ],
   },
