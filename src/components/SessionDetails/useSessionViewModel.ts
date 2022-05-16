@@ -1,21 +1,22 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
+
 import { getSession } from "../../data";
-import { MeasurementType, SessionModel } from "../../models";
+import { DistanceUnit, MeasurementType, SessionModel } from "../../models";
 import { Distance } from "../Distance";
 
 export function useSessionViewModel(sessionId: string | undefined) {
   const [session, setSession] = useState<SessionModel>();
+  const sessionViewModel = useMemo(
+    () => session && getSessionViewModel(session),
+    [session]
+  );
 
   useEffect(() => {
     sessionId !== undefined &&
       setTimeout(() => getSession(+sessionId).then(setSession), 500);
   }, [sessionId]);
 
-  if (session) {
-    return getSessionViewModel(session);
-  } else {
-    return;
-  }
+  return sessionViewModel;
 }
 
 type SessionViewModel = {
@@ -28,6 +29,8 @@ type SessionViewModel = {
 
 type RoundViewModel = {
   displayName: ReactNode;
+  distance: number;
+  distanceUnit: DistanceUnit;
   total: number;
   ends: Array<EndViewModel>;
   maximum: number;
@@ -71,12 +74,9 @@ function getSessionViewModel(model: SessionModel): SessionViewModel {
     }
 
     const roundViewModel: RoundViewModel = {
-      displayName: (
-        <>
-          {`Round ${i + 1} - ${round.face} `}
-          <Distance value={round.distance} unit={round.distanceUnit} />
-        </>
-      ),
+      displayName: `Round ${i + 1} - ${round.face} `,
+      distance: round.distance,
+      distanceUnit: round.distanceUnit,
       total: roundTotal,
       ends: endViewModels,
       maximum: endViewModels.reduce((prev, curr) => prev + curr.maximum, 0),

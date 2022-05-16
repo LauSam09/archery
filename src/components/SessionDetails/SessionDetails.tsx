@@ -21,6 +21,7 @@ import {
 import { useParams } from "react-router-dom";
 
 import { useSessionViewModel } from "./useSessionViewModel";
+import { Distance } from "../Distance";
 
 type SessionParams = {
   sessionId: string;
@@ -64,7 +65,12 @@ export function SessionDetails() {
                   <AccordionButton>
                     <Box flex="1" textAlign="left">
                       <Text>
-                        {round.displayName} ({round.total}/{round.maximum})
+                        {round.displayName}{" "}
+                        <Distance
+                          value={round.distance}
+                          unit={round.distanceUnit}
+                        />{" "}
+                        ({round.total}/{round.maximum})
                       </Text>
                     </Box>
                     <AccordionIcon />
