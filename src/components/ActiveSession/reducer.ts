@@ -2,7 +2,14 @@ import { Round } from "../../models";
 
 export type Action =
   | { type: "start-selection" }
-  | { type: "initialise-custom" }
+  | {
+      type: "initialise-custom";
+      customSession: {
+        name: string;
+        date: Date;
+        firstRound: Omit<Round, "ends">;
+      };
+    }
   | { type: "initialise-standard" };
 
 export interface NewSession {
@@ -36,7 +43,15 @@ export function reducer(state: State, action: Action): State {
       };
     case "initialise-custom":
       return {
-        ...state,
+        session: {
+          ...action.customSession,
+          rounds: [
+            {
+              ...action.customSession.firstRound,
+              ends: [],
+            },
+          ],
+        },
         stage: Stage.Active,
       };
     default:
