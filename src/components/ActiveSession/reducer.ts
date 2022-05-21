@@ -12,7 +12,8 @@ export type Action =
     }
   | { type: "initialise-standard" }
   | { type: "add-end"; payload: { round: number; end: End } }
-  | { type: "remove-previous-end" };
+  | { type: "remove-previous-end" }
+  | { type: "load-state"; payload: State };
 
 export interface NewSession {
   name: string;
@@ -89,6 +90,9 @@ export function reducer(state: State, action: Action): State {
           }),
         },
       };
+    }
+    case "load-state": {
+      return action.payload;
     }
     default:
       return state;

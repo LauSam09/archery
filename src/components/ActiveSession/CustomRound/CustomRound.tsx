@@ -22,9 +22,9 @@ import {
 } from "@chakra-ui/react";
 import { Dispatch, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { addSession } from "../../../data";
 import { MeasurementType } from "../../../models";
-
 import { Action, NewSession } from "../reducer";
 
 type Score = number | "X" | "M";
@@ -71,6 +71,7 @@ export function CustomRound(props: CustomRoundProps) {
 
   async function endSession() {
     const addedSession = await addSession(session);
+    localStorage.removeItem("active_session");
     navigate(`../${addedSession.id}`);
   }
 
