@@ -53,7 +53,12 @@ export function CustomRound(props: CustomRoundProps) {
   }
 
   function removeLastScore() {
-    setScores((scores) => scores.slice(0, scores.length - 1));
+    if (scores.length > 0) {
+      setScores((scores) => scores.slice(0, scores.length - 1));
+    } else if (currentEnd > 1) {
+      dispatch({ type: "remove-previous-end" });
+      setScores(currentRound.ends[currentEnd - 2].scores);
+    }
   }
 
   function nextEnd() {
@@ -80,9 +85,7 @@ export function CustomRound(props: CustomRoundProps) {
           <Text>
             Round {currentRoundNumber} End {currentEnd}
           </Text>
-          <Button disabled={scores.length === 0} onClick={removeLastScore}>
-            Undo
-          </Button>
+          <Button onClick={removeLastScore}>Undo</Button>
         </HStack>
 
         <TableContainer mb="4">

@@ -11,7 +11,8 @@ export type Action =
       };
     }
   | { type: "initialise-standard" }
-  | { type: "add-end"; payload: { round: number; end: End } };
+  | { type: "add-end"; payload: { round: number; end: End } }
+  | { type: "remove-previous-end" };
 
 export interface NewSession {
   name: string;
@@ -64,6 +65,24 @@ export function reducer(state: State, action: Action): State {
           rounds: state.session.rounds.map((round, i) => {
             if (i === action.payload.round) {
               return { ...round, ends: [...round.ends, action.payload.end] };
+            } else {
+              return { ...round };
+            }
+          }),
+        },
+      };
+    }
+    case "remove-previous-end": {
+      return {
+        ...state,
+        session: {
+          ...state.session,
+          rounds: state.session.rounds.map((round, i) => {
+            if (i === state.session.rounds.length - 1) {
+              return {
+                ...round,
+                ends: round.ends.slice(0, round.ends.length - 1),
+              };
             } else {
               return { ...round };
             }
