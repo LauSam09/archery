@@ -1,4 +1,5 @@
 import { useEffect, useReducer } from "react";
+import { CustomRound } from "./CustomRound";
 
 import { NewSessionSelection } from "./NewSessionSelection";
 import { reducer, initialState, Stage } from "./reducer";
@@ -9,7 +10,7 @@ import { reducer, initialState, Stage } from "./reducer";
 // On `/new` can display warning if there is already an active session.
 
 export function ActiveSession() {
-  const [{ stage }, dispatch] = useReducer(reducer, initialState);
+  const [{ stage, session }, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
     setTimeout(() => dispatch({ type: "start-selection" }), 500);
@@ -20,7 +21,7 @@ export function ActiveSession() {
       return <div>Loading</div>;
     case Stage.Selection:
       return <NewSessionSelection dispatch={dispatch} />;
-    case Stage.Active:
-      return <div>Active</div>;
+    case Stage.Custom:
+      return <CustomRound session={session} dispatch={dispatch} />;
   }
 }

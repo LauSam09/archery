@@ -1,4 +1,4 @@
-import { Round } from "../../models";
+import { End, Round } from "../../models";
 
 export type Action =
   | { type: "start-selection" }
@@ -10,7 +10,8 @@ export type Action =
         firstRound: Omit<Round, "ends">;
       };
     }
-  | { type: "initialise-standard" };
+  | { type: "initialise-standard" }
+  | { type: "add-end"; payload: { round: number; end: End } };
 
 export interface NewSession {
   name: string;
@@ -21,7 +22,8 @@ export interface NewSession {
 export enum Stage {
   Loading,
   Selection,
-  Active,
+  Standard,
+  Custom,
 }
 
 export const initialState: State = {
@@ -52,8 +54,23 @@ export function reducer(state: State, action: Action): State {
             },
           ],
         },
-        stage: Stage.Active,
+        stage: Stage.Custom,
       };
+    case "add-end": {
+      return {
+        ...state,
+        session: {
+          ...state.session,
+          rounds: state.session.rounds.map((round, i) => {
+            if (i === action.payload.round) {
+              return { ...round, ends: [...round.ends, action.payload.end] };
+            } else {
+              return { ...round };
+            }
+          }),
+        },
+      };
+    }
     default:
       return state;
   }

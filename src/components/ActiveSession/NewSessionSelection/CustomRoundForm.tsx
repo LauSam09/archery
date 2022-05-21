@@ -29,6 +29,9 @@ export function CustomRoundForm(props: CustomRoundFormProps) {
   const distance = 50;
   const scoring = MeasurementType.Metric;
   const date = new Date();
+  const name = `${date.toLocaleDateString()} ${face} ${distance}${
+    distanceUnit === DistanceUnit.Metres ? "m" : "yds"
+  }`;
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -36,7 +39,7 @@ export function CustomRoundForm(props: CustomRoundFormProps) {
     dispatch({
       type: "initialise-custom",
       customSession: {
-        name: "",
+        name,
         date,
         firstRound: { face, scoring, distance, distanceUnit },
       },
@@ -49,13 +52,7 @@ export function CustomRoundForm(props: CustomRoundFormProps) {
         <Stack>
           <FormControl>
             <FormLabel htmlFor="session-name">Name</FormLabel>
-            <Input
-              id="session-name"
-              value={`${date.toLocaleDateString()} ${face} ${distance}${
-                distanceUnit === DistanceUnit.Metres ? "m" : "yds"
-              } `}
-              readOnly
-            />
+            <Input id="session-name" value={name} readOnly />
           </FormControl>
 
           <FormControl>

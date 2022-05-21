@@ -1,3 +1,4 @@
+import { NewSession } from "../components/ActiveSession/reducer";
 import { DistanceUnit, MeasurementType, SessionModel } from "../models";
 
 const sessions: Array<SessionModel> = [
@@ -41,4 +42,12 @@ export async function getSessions() {
 
 export async function getSession(id: number) {
   return sessions.find((s) => s.id === id);
+}
+
+export async function addSession(session: NewSession) {
+  const id = sessions.length + 1;
+  const sessionToAdd = { ...session, id };
+  sessions.push(sessionToAdd);
+
+  return sessionToAdd;
 }
